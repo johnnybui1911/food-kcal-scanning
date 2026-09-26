@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF8EC"/><stop offset="1" stop-color="#FBE3C2"/>
+    </linearGradient>
+    <clipPath id="rice"><rect x="0" y="0" width="1024" height="548"/></clipPath>
+  </defs>
+  <!-- In-app variant: transparent ground so it sits on the white preview card.
+       A soft mint disc replaces the green tile so the white rice still reads. -->
+  <circle cx="512" cy="560" r="330" fill="#E3EFE7"/>
+  <g fill="none" stroke="#2F6F4F" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" opacity="0.55">
+    <path d="M110 270 V190 Q110 120 180 120 H260"/>
+    <path d="M914 270 V190 Q914 120 844 120 H764"/>
+    <path d="M110 754 V834 Q110 904 180 904 H260"/>
+    <path d="M914 754 V834 Q914 904 844 904 H764"/>
+  </g>
+  <path d="M512 408 Q508 360 520 322" fill="none" stroke="#2E8B57" stroke-width="16" stroke-linecap="round"/>
+  <path d="M520 330 Q560 270 626 286 Q600 350 520 330 Z" fill="#8FD957"/>
+  <path d="M514 352 Q470 300 410 322 Q440 380 514 352 Z" fill="#6CC24A"/>
+  <ellipse cx="512" cy="548" rx="232" ry="150" fill="#FFFFFF" stroke="#D9E8DE" stroke-width="8" clip-path="url(#rice)"/>
+  <circle cx="440" cy="452" r="10" fill="#E3EFE7"/><circle cx="592" cy="470" r="9" fill="#E3EFE7"/><circle cx="520" cy="430" r="8" fill="#E3EFE7"/>
+  <path d="M256 548 H768 A256 256 0 0 1 256 548 Z" fill="url(#bowl)"/>
+  <rect x="440" y="786" width="144" height="34" rx="17" fill="#F4D5AC"/>
+  <rect x="244" y="530" width="536" height="40" rx="20" fill="#FFF8EC"/>
+  <rect x="244" y="556" width="536" height="14" rx="7" fill="#F4D5AC" opacity="0.7"/>
+  <circle cx="436" cy="650" r="27" fill="#23392E"/><circle cx="445" cy="640" r="9" fill="#FFFFFF"/>
+  <circle cx="588" cy="650" r="27" fill="#23392E"/><circle cx="597" cy="640" r="9" fill="#FFFFFF"/>
+  <path d="M484 688 Q512 716 540 688" fill="none" stroke="#23392E" stroke-width="14" stroke-linecap="round"/>
+  <ellipse cx="376" cy="700" rx="36" ry="20" fill="#FF8F7E" opacity="0.75"/>
+  <ellipse cx="648" cy="700" rx="36" ry="20" fill="#FF8F7E" opacity="0.75"/>
+</svg>
