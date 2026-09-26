@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5FD394"/><stop offset="1" stop-color="#1F7A52"/>
+    </linearGradient>
+    <clipPath id="rice"><rect x="0" y="0" width="1024" height="548"/></clipPath>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <!-- no scan corners and no fine detail: the bowl is scaled up so it survives 16-48px -->
+  <g transform="translate(512 560) scale(1.45) translate(-512 -600)">
+    <path d="M512 408 Q508 360 520 322" fill="none" stroke="#2E8B57" stroke-width="18" stroke-linecap="round"/>
+    <path d="M520 330 Q560 270 626 286 Q600 350 520 330 Z" fill="#C8F08F"/>
+    <path d="M514 352 Q470 300 410 322 Q440 380 514 352 Z" fill="#A6E36B"/>
+    <ellipse cx="512" cy="548" rx="232" ry="150" fill="#FFFFFF" clip-path="url(#rice)"/>
+    <path d="M256 548 H768 A256 256 0 0 1 256 548 Z" fill="#FDEBD3"/>
+    <rect x="244" y="530" width="536" height="40" rx="20" fill="#FFF8EC"/>
+    <circle cx="436" cy="652" r="32" fill="#23392E"/>
+    <circle cx="588" cy="652" r="32" fill="#23392E"/>
+    <path d="M478 692 Q512 724 546 692" fill="none" stroke="#23392E" stroke-width="18" stroke-linecap="round"/>
+    <ellipse cx="370" cy="704" rx="38" ry="22" fill="#FF8F7E"/>
+    <ellipse cx="654" cy="704" rx="38" ry="22" fill="#FF8F7E"/>
+  </g>
+</svg>

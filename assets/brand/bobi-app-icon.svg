@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bgA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5FD394"/><stop offset="1" stop-color="#1F7A52"/>
+    </linearGradient>
+    <linearGradient id="bowlA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF8EC"/><stop offset="1" stop-color="#FBE3C2"/>
+    </linearGradient>
+    <clipPath id="riceClipA"><rect x="0" y="0" width="1024" height="548"/></clipPath>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bgA)"/>
+  <!-- scan corners -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" opacity="0.92">
+    <path d="M160 300 V220 Q160 160 220 160 H300"/>
+    <path d="M864 300 V220 Q864 160 804 160 H724"/>
+    <path d="M160 724 V804 Q160 864 220 864 H300"/>
+    <path d="M864 724 V804 Q864 864 804 864 H724"/>
+  </g>
+  <!-- sprout -->
+  <path d="M512 408 Q508 360 520 322" fill="none" stroke="#2E8B57" stroke-width="16" stroke-linecap="round"/>
+  <path d="M520 330 Q560 270 626 286 Q600 350 520 330 Z" fill="#C8F08F"/>
+  <path d="M514 352 Q470 300 410 322 Q440 380 514 352 Z" fill="#A6E36B"/>
+  <!-- rice dome -->
+  <ellipse cx="512" cy="548" rx="232" ry="150" fill="#FFFFFF" clip-path="url(#riceClipA)"/>
+  <circle cx="440" cy="452" r="10" fill="#EEF3EF"/><circle cx="592" cy="470" r="9" fill="#EEF3EF"/><circle cx="520" cy="430" r="8" fill="#EEF3EF"/>
+  <!-- bowl -->
+  <path d="M256 548 H768 A256 256 0 0 1 256 548 Z" fill="url(#bowlA)"/>
+  <rect x="440" y="786" width="144" height="34" rx="17" fill="#F4D5AC"/>
+  <rect x="244" y="530" width="536" height="40" rx="20" fill="#FFF8EC"/>
+  <rect x="244" y="556" width="536" height="14" rx="7" fill="#F4D5AC" opacity="0.7"/>
+  <!-- face -->
+  <circle cx="436" cy="650" r="27" fill="#23392E"/><circle cx="445" cy="640" r="9" fill="#FFFFFF"/>
+  <circle cx="588" cy="650" r="27" fill="#23392E"/><circle cx="597" cy="640" r="9" fill="#FFFFFF"/>
+  <path d="M484 688 Q512 716 540 688" fill="none" stroke="#23392E" stroke-width="14" stroke-linecap="round"/>
+  <ellipse cx="376" cy="700" rx="36" ry="20" fill="#FF8F7E" opacity="0.75"/>
+  <ellipse cx="648" cy="700" rx="36" ry="20" fill="#FF8F7E" opacity="0.75"/>
+</svg>
