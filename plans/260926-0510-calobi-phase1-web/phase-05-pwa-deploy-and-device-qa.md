@@ -1,7 +1,7 @@
 ---
 phase: 5
 title: "Phase 5: PWA, Deploy and Device QA"
-status: todo
+status: in-progress
 priority: P1
 effort: "1.5h"
 dependencies: [1, 2, 3, 4]

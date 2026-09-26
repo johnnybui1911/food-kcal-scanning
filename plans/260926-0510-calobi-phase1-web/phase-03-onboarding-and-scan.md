@@ -1,7 +1,7 @@
 ---
 phase: 3
 title: "Phase 3: Onboarding and Scan Screen"
-status: todo
+status: completed
 priority: P1
 effort: "2h"
 dependencies: [1, 2]

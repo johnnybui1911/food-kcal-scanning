@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "Phase 1: Project Setup and Shared Core"
-status: todo
+status: completed
 priority: P1
 effort: "1.5h"
 dependencies: []

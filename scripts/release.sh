@@ -9,15 +9,16 @@ die() { printf '\nRELEASE FAIL: %s\n' "$1"; exit 1; }
 
 step "Preflight"
 missing=0
-key="$(grep -E '^ANTHROPIC_API_KEY=' .dev.vars 2>/dev/null | cut -d= -f2- | tr -d '[:space:]')"
+key="$(grep -E '^ANTHROPIC_API_KEY=' .dev.vars 2>/dev/null | tail -1 | cut -d= -f2- | tr -d "[:space:]\"'")"
 if [ -z "$key" ]; then echo "  - Missing: ANTHROPIC_API_KEY in .dev.vars (line: ANTHROPIC_API_KEY=...)"; missing=1; fi
 if [ ! -f scripts/fixtures/food.jpg ]; then echo "  - Missing: a real food photo at scripts/fixtures/food.jpg"; missing=1; fi
 if ! npx wrangler whoami 2>/dev/null | grep -q "You are logged in"; then echo "  - Missing: Cloudflare login (run: npx wrangler login)"; missing=1; fi
+if lsof -i :8787 >/dev/null 2>&1; then echo "  - Port 8787 is busy (stop the old wrangler dev first)"; missing=1; fi
 [ "$missing" = "0" ] || die "prerequisites missing (see above)"
 echo "  all prerequisites present"
 
 step "Tests and typecheck"
-npm test >/dev/null 2>&1 || die "unit tests"
+npm test || die "unit tests"
 npx tsc --noEmit || die "app typecheck"
 npx tsc -p worker/tsconfig.json || die "worker typecheck"
 

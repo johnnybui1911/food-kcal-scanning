@@ -20,6 +20,7 @@ const vi = {
   errors: {
     offline: "Không có kết nối mạng. Kiểm tra mạng rồi thử lại.",
     rate_limited: "Bạn đã dùng hết lượt scan hôm nay. Hãy quay lại sau nhé.",
+    busy: "Bạn thao tác hơi nhanh. Đợi khoảng 1 phút rồi thử lại nhé.",
     not_food: "Không thấy món ăn trong ảnh. Hãy chụp rõ món ăn hơn.",
     ai_failed: "AI đang bận hoặc gặp lỗi. Vui lòng thử lại.",
     too_large: "Ảnh quá lớn. Hãy thử ảnh khác.",
@@ -90,6 +91,7 @@ const en: Strings = {
   errors: {
     offline: "No internet connection. Check your network and try again.",
     rate_limited: "You’ve used today’s scans. Please come back later.",
+    busy: "Too many requests. Wait about a minute and try again.",
     not_food: "No food found in this photo. Try a clearer shot of the meal.",
     ai_failed: "The AI is busy or failed. Please try again.",
     too_large: "The photo is too large. Try another one.",

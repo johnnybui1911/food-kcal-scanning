@@ -12,6 +12,7 @@ export function FeedbackPanel({ item, onSaved }: { item: HistoryItem; onSaved: (
   const [rating, setRating] = useState<"up" | "down" | null>(null);
   const [reasons, setReasons] = useState<FeedbackReason[]>([]);
   const [comment, setComment] = useState("");
+  const [sending, setSending] = useState(false);
 
   if (item.feedback) {
     return (
@@ -25,7 +26,8 @@ export function FeedbackPanel({ item, onSaved }: { item: HistoryItem; onSaved: (
     setReasons((cur) => (cur.includes(r) ? cur.filter((x) => x !== r) : [...cur, r]));
 
   const submit = async () => {
-    if (!rating) return;
+    if (!rating || sending) return;
+    setSending(true);
     const feedback = { rating, reasons, comment: comment.trim() };
     // Fire and forget: a failed send never blocks the user.
     sendFeedback({
@@ -87,7 +89,7 @@ export function FeedbackPanel({ item, onSaved }: { item: HistoryItem; onSaved: (
             style={styles.input}
             accessibilityLabel={t.comment}
           />
-          <PrimaryButton label={t.send} onPress={submit} />
+          <PrimaryButton label={t.send} onPress={submit} loading={sending} />
         </>
       ) : null}
     </View>

@@ -3,7 +3,7 @@ import type { Locale } from "./i18n";
 import type { NutritionResult } from "./nutrition-schema";
 import { getDeviceId } from "./storage";
 
-export type ApiErrorKind = "offline" | "rate_limited" | "not_food" | "ai_failed" | "too_large" | "bad_request" | "generic";
+export type ApiErrorKind = "offline" | "rate_limited" | "busy" | "not_food" | "ai_failed" | "too_large" | "bad_request" | "generic";
 export type ApiResult<T> = { ok: true; data: T } | { ok: false; kind: ApiErrorKind; result?: NutritionResult };
 export type ScanResponse = { result: NutritionResult; model: string; prompt_version: string };
 
@@ -32,6 +32,8 @@ async function post<T>(path: string, body: unknown, signal?: AbortSignal): Promi
   const data = await res.json().catch(() => null);
   if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
   if (res.status === 200 && data) return { ok: true, data: data as T };
+  // A burst 429 (too many taps in a minute) is different from running out of daily scans.
+  if (res.status === 429 && data?.scope === "burst") return { ok: false, kind: "busy" };
   return { ok: false, kind: STATUS_KIND[res.status] ?? "generic", result: data?.result };
 }
 

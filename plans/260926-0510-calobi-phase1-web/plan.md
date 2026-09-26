@@ -1,7 +1,7 @@
 ---
 title: "Calobi Phase 1 — food photo to kcal, shipped as a web app"
 description: "Build the Calobi Expo app, export it to web, and deploy it with a Cloudflare Worker AI proxy on a free workers.dev URL tonight."
-status: pending
+status: in-progress
 priority: P1
 effort: 9h
 branch: feat/calobi-phase1-web
@@ -83,6 +83,24 @@ Phases run in order. Phase 2 depends on the schema from Phase 1. Phases 3 and 4 
 2. Run `! npx wrangler login` (interactive browser login) and make sure the account has a workers.dev subdomain.
 3. Provide one real food photo at `scripts/fixtures/food.jpg` for smoke tests.
 4. Test on their own iPhone and Android phone (Phase 5).
+
+## Execution notes (2026-09-26)
+
+- Phases 1, 3 and 4 are complete. Phases 2 and 5 are complete except the steps that need the user's inputs, which the user asked to run together at the end.
+- **Deferred to one command, `scripts/release.sh`:** Task 2.9 (real-Claude smoke), Tasks 5.4–5.6 (login check, deploy, secret, prod smoke). Task 5.8 (device QA) stays manual.
+- **Deviations from the plan text:**
+  - The Expo template is SDK 57, not 58.
+  - The i18n module is split into `src/lib/strings.ts` and `src/lib/i18n.tsx`.
+  - The vitest config is `vitest.config.mts`.
+  - A project `.npmrc` points to the public npm registry, because the global registry `npm.shopee.io` was unreachable.
+  - The non-food fixture is `scripts/fixtures/non-food.png`, because the new app icon contains a food emoji.
+  - A temporary Calobi icon (green "C" with a bowl) replaces the Expo default.
+- **Added after Kongming checkpoints:**
+  - A `content-length` 413 guard before JSON parsing.
+  - Anthropic 429 now also falls back to the second model.
+  - One full-resolution decode per photo, with the thumbnail made from the 1024px image.
+  - An in-memory storage mirror, so onboarding cannot loop when storage is blocked.
+- **Browser QA:** headless Chrome at 390×844 passed 22/22 checks against `wrangler dev` serving the export, including a 4000×3000 photo through the picker.
 
 ## Unresolved
 

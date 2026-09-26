@@ -1,7 +1,7 @@
 ---
 phase: 2
 title: "Phase 2: Worker AI Proxy"
-status: todo
+status: in-progress
 priority: P1
 effort: "2h"
 dependencies: [1]
