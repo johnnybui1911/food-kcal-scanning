@@ -67,6 +67,14 @@ Models, AI effort, and quota limits are Worker vars in
 [`wrangler.jsonc`](../wrangler.jsonc). Changing them needs a redeploy, not a code
 change.
 
+The Worker is pinned to a US region with `placement.region` in `wrangler.jsonc`.
+Without it, requests from Vietnam often run in Cloudflare's Hong Kong data
+center, and Anthropic rejects calls from there with `403 forbidden "Request not
+allowed"`, which the Worker returns as `502 ai_failed`. Keep the hint when changing
+placement settings. Check it with the `cf-placement` response header on
+`/api/health`: a US colo (for example `remote-IAD`, or `local-IAD` for a US
+caller) means it ran in the US; an Asian colo means the hint was not applied.
+
 ## Operational routes
 
 ### API key
@@ -83,9 +91,13 @@ change.
 ### Logs
 
 - **When to use:** AI failures, fallbacks, latency, or feedback events.
-- **Source of truth:** Workers Logs (observability is enabled in `wrangler.jsonc`)
-  for the `calobi` Worker, in the Cloudflare dashboard, or live with
-  `npx wrangler tail calobi`.
+- **Source of truth:** Workers Logs and Traces for the `calobi` Worker, in the
+  Cloudflare dashboard, or live with `npx wrangler tail calobi`. The
+  `observability` block in `wrangler.jsonc` mirrors the dashboard settings;
+  keep them in sync, or a deploy overwrites dashboard changes.
+- **Finding a failure:** the invocation log has the URL, status and colo but
+  not the failure cause. The cause is in the separate `console.log` event (for example `evt: "ai_failed"`)
+  with the same `requestId`.
 - **Shape:** one JSON line per event with an `evt` field; event names are in
   [`worker/index.ts`](../worker/index.ts) and [`worker/claude.ts`](../worker/claude.ts).
 - **Limits:** feedback logs include free-text comments from users; treat them as
