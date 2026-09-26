@@ -3,7 +3,7 @@ import { estimate } from "./claude";
 import { corsHeaders, json } from "./http";
 import { buildRefineSystem, buildRefineUserText, buildScanSystem, buildScanUserText, PROMPT_VERSION } from "./prompt";
 import { checkDailyQuota } from "./quota";
-import { isDeviceId, parseFeedbackBody, parseRefineBody, parseScanBody } from "./validate";
+import { IMAGE_BASE64_MAX, isDeviceId, parseFeedbackBody, parseRefineBody, parseScanBody } from "./validate";
 
 export { QuotaCounter } from "./quota";
 
@@ -22,6 +22,10 @@ async function handleApi(request: Request, env: Env, path: string): Promise<Resp
   // Keyed by device, not IP: Vietnamese mobile carriers put many users behind one IP (CGNAT).
   const burst = await env.BURST_LIMITER.limit({ key: `d:${deviceId}` });
   if (!burst.success) return json({ error: "rate_limited", scope: "burst" }, 429);
+
+  // Reject oversized bodies before parsing: JSON-parsing megabytes can exceed the Workers CPU limit.
+  const length = Number(request.headers.get("content-length") ?? 0);
+  if (length > IMAGE_BASE64_MAX + 4096) return json({ error: "image_too_large" }, 413);
 
   let body: unknown;
   try {

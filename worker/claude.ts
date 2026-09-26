@@ -36,8 +36,10 @@ async function call(client: Anthropic, env: Env, model: string, system: string, 
   return sanitizeResult(NutritionResultSchema.parse(JSON.parse(text.text)));
 }
 
+// 429 is retried on the fallback model too: rate limits are tracked per model.
 const retryable = (e: unknown) =>
-  e instanceof Anthropic.APIConnectionError || (e instanceof Anthropic.APIError && (e.status ?? 0) >= 500);
+  e instanceof Anthropic.APIConnectionError ||
+  (e instanceof Anthropic.APIError && ((e.status ?? 0) >= 500 || e.status === 429));
 
 export async function estimate(env: Env, system: string, content: Content): Promise<{ result: NutritionResult; model: string }> {
   const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 1, timeout: 45_000 });
