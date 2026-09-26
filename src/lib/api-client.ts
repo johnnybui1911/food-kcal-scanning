@@ -30,6 +30,7 @@ async function post<T>(path: string, body: unknown, signal?: AbortSignal): Promi
   }
   if (res.status === 204) return { ok: true, data: null as T };
   const data = await res.json().catch(() => null);
+  if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
   if (res.status === 200 && data) return { ok: true, data: data as T };
   return { ok: false, kind: STATUS_KIND[res.status] ?? "generic", result: data?.result };
 }

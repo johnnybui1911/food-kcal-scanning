@@ -26,19 +26,25 @@ const KEYS = {
   a2hsDismissed: "calobi.a2hsDismissed.v1",
 };
 
+// In-memory mirror so the app still works for this session when storage is blocked
+// (e.g. Safari "Block All Cookies") — otherwise onboarding would loop forever.
+const memory = new Map<string, string>();
+
 async function read(key: string): Promise<string | null> {
   try {
-    return await AsyncStorage.getItem(key);
+    const v = await AsyncStorage.getItem(key);
+    return v ?? memory.get(key) ?? null;
   } catch {
-    return null;
+    return memory.get(key) ?? null;
   }
 }
 
 async function write(key: string, value: string): Promise<void> {
+  memory.set(key, value);
   try {
     await AsyncStorage.setItem(key, value);
   } catch {
-    // Storage can be unavailable (private mode) or full; the app keeps working in memory.
+    // Storage unavailable or full; the in-memory mirror keeps this session working.
   }
 }
 
@@ -90,6 +96,7 @@ export async function listHistory(): Promise<HistoryItem[]> {
 }
 
 async function writeHistory(items: HistoryItem[]): Promise<void> {
+  memory.set(KEYS.history, JSON.stringify(items));
   try {
     await AsyncStorage.setItem(KEYS.history, JSON.stringify(items));
   } catch {

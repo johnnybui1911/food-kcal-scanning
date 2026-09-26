@@ -23,26 +23,33 @@ export async function pickImage(source: "camera" | "library"): Promise<ImagePick
   return result.canceled ? null : result.assets[0];
 }
 
-function fitSize(asset: ImagePicker.ImagePickerAsset, maxSide: number): { width: number } | { height: number } {
-  if (!asset.width || !asset.height) return { width: maxSide };
-  return asset.width >= asset.height
-    ? { width: Math.min(maxSide, asset.width) }
-    : { height: Math.min(maxSide, asset.height) };
+function fitSize(width: number, height: number, maxSide: number): { width: number } | { height: number } {
+  if (!width || !height) return { width: maxSide };
+  return width >= height ? { width: Math.min(maxSide, width) } : { height: Math.min(maxSide, height) };
 }
 
-async function renderJpeg(asset: ImagePicker.ImagePickerAsset, maxSide: number, compress: number): Promise<string> {
-  const ctx = ImageManipulator.manipulate(asset.uri);
-  ctx.resize(fitSize(asset, maxSide));
-  const img = await ctx.renderAsync();
-  const out = await img.saveAsync({ format: SaveFormat.JPEG, compress, base64: true });
-  if (!out.base64) throw new Error("image_encode_failed");
-  return out.base64.replace(/^data:[^;]+;base64,/, "");
+function stripPrefix(b64: string | undefined): string {
+  if (!b64) throw new Error("image_encode_failed");
+  return b64.replace(/^data:[^;]+;base64,/, "");
 }
 
+// Decode the full-resolution photo once, then derive the thumbnail from the 1024px image:
+// on web the resize runs on the main thread, and a 24MP iPhone photo decoded twice in
+// parallel can crash the Safari tab.
 export async function prepareImage(asset: ImagePicker.ImagePickerAsset): Promise<PreparedImage> {
-  const [base64, thumb] = await Promise.all([
-    renderJpeg(asset, IMAGE_MAX_SIDE, IMAGE_JPEG_QUALITY),
-    renderJpeg(asset, THUMB_SIDE, 0.5),
-  ]);
-  return { base64, mediaType: "image/jpeg", thumbnail: `data:image/jpeg;base64,${thumb}` };
+  const ctx = ImageManipulator.manipulate(asset.uri);
+  ctx.resize(fitSize(asset.width, asset.height, IMAGE_MAX_SIDE));
+  const img = await ctx.renderAsync();
+  const full = await img.saveAsync({ format: SaveFormat.JPEG, compress: IMAGE_JPEG_QUALITY, base64: true });
+
+  const thumbCtx = ImageManipulator.manipulate(img);
+  thumbCtx.resize(fitSize(img.width, img.height, THUMB_SIDE));
+  const thumbImg = await thumbCtx.renderAsync();
+  const thumb = await thumbImg.saveAsync({ format: SaveFormat.JPEG, compress: 0.5, base64: true });
+
+  return {
+    base64: stripPrefix(full.base64),
+    mediaType: "image/jpeg",
+    thumbnail: `data:image/jpeg;base64,${stripPrefix(thumb.base64)}`,
+  };
 }

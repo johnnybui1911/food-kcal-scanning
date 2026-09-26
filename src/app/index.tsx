@@ -74,9 +74,9 @@ export default function ScanScreen() {
     let asset: ImagePickerAsset | null;
     try {
       asset = await pickImage(source);
-    } catch {
+    } catch (e) {
       setStatus("error");
-      setError("permission");
+      setError((e as Error)?.message === "permission_denied" ? "permission" : "generic");
       return;
     }
     if (!asset) return;
