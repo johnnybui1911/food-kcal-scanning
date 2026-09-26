@@ -67,6 +67,13 @@ Models, AI effort, and quota limits are Worker vars in
 [`wrangler.jsonc`](../wrangler.jsonc). Changing them needs a redeploy, not a code
 change.
 
+The Worker is pinned to a US region with `placement.region` in `wrangler.jsonc`.
+Without it, requests from Vietnam often run in Cloudflare's Hong Kong data
+center, and Anthropic rejects calls from there with `403 forbidden "Request not
+allowed"`, which the API returns as `502 ai_failed`. Keep the hint when changing
+placement settings. Check it with the `cf-placement` response header on
+`/api/health`: `remote-<colo>` means the hint applied.
+
 ## Operational routes
 
 ### API key
