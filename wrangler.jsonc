@@ -1,0 +1,31 @@
+{
+  "name": "calobi",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist/",
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true },
+  "ratelimits": [
+    { "name": "BURST_LIMITER", "namespace_id": "1001", "simple": { "limit": 6, "period": 60 } }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "QUOTA", "class_name": "QuotaCounter" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["QuotaCounter"] }],
+  "analytics_engine_datasets": [{ "binding": "FEEDBACK", "dataset": "calobi_feedback" }],
+  "vars": {
+    "MODEL": "claude-sonnet-5",
+    "FALLBACK_MODEL": "claude-haiku-4-5",
+    "AI_EFFORT": "low",
+    "DEVICE_DAILY_LIMIT": "20",
+    "IP_DAILY_LIMIT": "300",
+    "GLOBAL_DAILY_LIMIT": "400"
+  }
+  // Secret ANTHROPIC_API_KEY is set with `npx wrangler secret put ANTHROPIC_API_KEY` (never here).
+  // Local dev only: ALLOWED_DEV_ORIGIN in .dev.vars enables CORS for the Expo dev server.
+}
