@@ -83,9 +83,13 @@ change.
 ### Logs
 
 - **When to use:** AI failures, fallbacks, latency, or feedback events.
-- **Source of truth:** Workers Logs (observability is enabled in `wrangler.jsonc`)
-  for the `calobi` Worker, in the Cloudflare dashboard, or live with
-  `npx wrangler tail calobi`.
+- **Source of truth:** Workers Logs and Traces for the `calobi` Worker, in the
+  Cloudflare dashboard, or live with `npx wrangler tail calobi`. The
+  `observability` block in `wrangler.jsonc` mirrors the dashboard settings;
+  keep them in sync, or a deploy overwrites dashboard changes.
+- **Finding a failure:** the invocation log only shows the status code. The
+  cause is in the separate `console.log` event (for example `evt: "ai_failed"`)
+  with the same `requestId`.
 - **Shape:** one JSON line per event with an `evt` field; event names are in
   [`worker/index.ts`](../worker/index.ts) and [`worker/claude.ts`](../worker/claude.ts).
 - **Limits:** feedback logs include free-text comments from users; treat them as
