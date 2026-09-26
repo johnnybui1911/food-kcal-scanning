@@ -70,9 +70,10 @@ change.
 The Worker is pinned to a US region with `placement.region` in `wrangler.jsonc`.
 Without it, requests from Vietnam often run in Cloudflare's Hong Kong data
 center, and Anthropic rejects calls from there with `403 forbidden "Request not
-allowed"`, which the API returns as `502 ai_failed`. Keep the hint when changing
+allowed"`, which the Worker returns as `502 ai_failed`. Keep the hint when changing
 placement settings. Check it with the `cf-placement` response header on
-`/api/health`: `remote-<colo>` means the hint applied.
+`/api/health`: a US colo (for example `remote-IAD`, or `local-IAD` for a US
+caller) means it ran in the US; an Asian colo means the hint was not applied.
 
 ## Operational routes
 
@@ -94,8 +95,8 @@ placement settings. Check it with the `cf-placement` response header on
   Cloudflare dashboard, or live with `npx wrangler tail calobi`. The
   `observability` block in `wrangler.jsonc` mirrors the dashboard settings;
   keep them in sync, or a deploy overwrites dashboard changes.
-- **Finding a failure:** the invocation log only shows the status code. The
-  cause is in the separate `console.log` event (for example `evt: "ai_failed"`)
+- **Finding a failure:** the invocation log has the URL, status and colo but
+  not the failure cause. The cause is in the separate `console.log` event (for example `evt: "ai_failed"`)
   with the same `requestId`.
 - **Shape:** one JSON line per event with an `evt` field; event names are in
   [`worker/index.ts`](../worker/index.ts) and [`worker/claude.ts`](../worker/claude.ts).
