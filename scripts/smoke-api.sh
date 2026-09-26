@@ -50,7 +50,7 @@ if [ "${SMOKE_SKIP_AI:-0}" != "1" ]; then
   cp "$TMP/out" "$TMP/scan-result.json"
 
   echo "== scan non-food -> 422"
-  NONFOOD="$DIR/../assets/images/icon.png"
+  NONFOOD="$DIR/fixtures/non-food.png"
   build_scan "$NONFOOD" image/png "$TMP/nonfood.json"
   CODE=$(post /api/scan "$TMP/nonfood.json")
   [ "$CODE" = "422" ] && grep -q not_food "$TMP/out" || { cat "$TMP/out"; fail "scan non-food (HTTP $CODE)"; }

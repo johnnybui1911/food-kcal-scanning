@@ -44,3 +44,4 @@ example
 .dev.vars
 .wrangler/
 worker-configuration.d.ts
+scripts/fixtures/food*.jpg
