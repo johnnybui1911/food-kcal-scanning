@@ -7,13 +7,18 @@
 | Local | `npx wrangler dev` on port 8787 (Worker + built `dist/`), optionally the Expo dev server for hot reload | `.dev.vars` (gitignored) |
 | Production | One Cloudflare Worker on the account's `workers.dev` subdomain, serving assets and `/api/*` | Wrangler secret `ANTHROPIC_API_KEY` |
 
-There is no staging environment.
+There is no staging environment. Production is live at
+`https://calobi.johnny-bui1911.workers.dev` (first deployed 2026-09-26).
 
 ## Prerequisites
 
 - An Anthropic API key with a monthly spend limit set in the Claude Console.
 - A Cloudflare account with a `workers.dev` subdomain, logged in via
   `npx wrangler login` (interactive).
+- Workers Analytics Engine enabled on that account. A new account has it off,
+  and `wrangler deploy` then fails with error code 10089. Enable it once in the
+  dashboard (Workers → Analytics Engine) by creating the dataset
+  `calobi_feedback` with binding `FEEDBACK`, matching `wrangler.jsonc`.
 - `npm install` uses the public registry through the project [`.npmrc`](../.npmrc).
 
 ## Local development
@@ -42,6 +47,15 @@ rather than running its steps by hand.
 The smoke test needs a real food photo at `scripts/fixtures/food.jpg`
 (gitignored). The script resizes it with macOS `sips`, so releases currently run
 from macOS.
+
+The last smoke step expects the burst limiter to return 429 within eight quick
+requests. That holds under `wrangler dev`, but in production the Workers Rate
+Limiting binding counts per Cloudflare location and is eventually consistent, so
+the step can fail while every other endpoint works (observed on the first
+deploy). When only that step fails, the deploy and secret have already
+succeeded; confirm with `/api/health` and the earlier smoke steps rather than
+treating it as a failed release. The daily quotas in the Durable Object are
+exact and are not affected.
 
 After a release, run the device QA checklist (Task 5.8 in the
 [phase 5 plan](../plans/260926-0510-calobi-phase1-web/phase-05-pwa-deploy-and-device-qa.md))
