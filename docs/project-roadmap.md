@@ -13,7 +13,9 @@
 
 - **Native iOS and Android builds** from the same Expo codebase via EAS. The
   code already avoids web-only assumptions for this reason.
-- **Final name and branding.** "Calobi" and the current icon are placeholders.
+- **Final name and native branding.** "Calobi" is still a working name. The web
+  icons use the Bobi mascot, but the Android adaptive icon, iOS icon and splash
+  screen are still Expo template assets.
 - **Custom domain**, if and when it is worth resetting iOS home-screen storage
   for existing installs.
 - **Prompt tuning from feedback.** Use the Analytics Engine feedback, grouped by

@@ -12,6 +12,7 @@ Navigation only. Open the linked owner for behavior.
 | Worker bindings, vars, quotas config           | [`wrangler.jsonc`](../wrangler.jsonc)                                                       |
 | Expo app config                                | [`app.json`](../app.json)                                                                   |
 | PWA shell (manifest, Apple meta tags, icons)   | [`public/`](../public/)                                                                     |
+| Logo and icon sources (SVG)                    | [`assets/brand/`](../assets/brand/); rasterised by [`scripts/render-brand-icons.sh`](../scripts/render-brand-icons.sh) |
 | Release pipeline                               | [`scripts/release.sh`](../scripts/release.sh)                                               |
 | API smoke test                                 | [`scripts/smoke-api.sh`](../scripts/smoke-api.sh)                                           |
 

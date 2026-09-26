@@ -118,7 +118,11 @@ export default function ScanScreen() {
         {image ? (
           <Image source={{ uri: image.thumbnail }} style={styles.previewImage} resizeMode="cover" />
         ) : (
-          <Text style={styles.placeholder}>🍜</Text>
+          <Image
+            source={require("@/assets/images/bobi-mascot.png")}
+            style={styles.placeholder}
+            accessible={false}
+          />
         )}
         {busy ? (
           <View style={styles.overlay}>
@@ -181,7 +185,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   previewImage: { width: "100%", height: "100%" },
-  placeholder: { fontSize: 64 },
+  placeholder: { width: 168, height: 168 },
   overlay: {
     ...StyleSheet.absoluteFill,
     backgroundColor: "rgba(29,27,24,0.55)",
