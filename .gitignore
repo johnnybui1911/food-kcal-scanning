@@ -45,3 +45,6 @@ example
 .wrangler/
 worker-configuration.d.ts
 scripts/fixtures/food*.jpg
+
+.claude/
+.agentkit/
